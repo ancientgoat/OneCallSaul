@@ -1,2 +1,4 @@
-include 'sauldto'
-
+//
+// Name the plugin
+//
+rootProject.name = 'one-call-saul'
