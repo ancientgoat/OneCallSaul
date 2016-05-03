@@ -13,9 +13,13 @@ public class GenFromTemplates extends DefaultTask {
 	public void genFromTemplates() {
 
 		Project project = OneCallSaul.getProject();
+
 		System.out.println("----------------------------------------------------------");
+
 		DxSetup.genFromTemplates(project);
+
 		System.out.println("----------------------------------------------------------");
+
 
 
 

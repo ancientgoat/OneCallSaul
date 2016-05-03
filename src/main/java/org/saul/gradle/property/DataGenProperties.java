@@ -20,9 +20,9 @@ public class DataGenProperties {
 	private static final String DS_NEW = "src/main/resources/saul/datasource/";
 	private static final String DT_NEW = "src/main/resources/saul/templates/";
 
-	private static final Path DEFAULT_GEN_JAVA_PATH = Paths.get("generated-sources/src/main/java/src/main/java/");
-	private static final Path DEFAULT_GEN_RESOURCE_PATH =
-			Paths.get("generated-sources/src/main/resources/src/main/resources/");
+//	private static final Path DEFAULT_GEN_JAVA_PATH = Paths.get("generated-sources/src/main/java/");
+//	private static final Path DEFAULT_GEN_RESOURCE_PATH =
+//			Paths.get("generated-sources/src/main/resources/");
 
 	private static final String GENERATED = "generated";
 	private static final String RESOURCES = "resources";
@@ -39,11 +39,13 @@ public class DataGenProperties {
 
 	private Set<Path> mainJavaDirs = Sets.newHashSet();
 	private Set<Path> mainResourceDirs = Sets.newHashSet();
-	private Path generatedJavaDir = null;
-	private Path generatedResourceDir = null;
 	private Set<Path> templateFiles = Sets.newHashSet();
 
 	private DataGenProperties() {
+	}
+
+	public Path getBuildPath(){
+		return Paths.get(this.project.getBuildDir().getAbsolutePath());
 	}
 
 	public Project getProject() {
@@ -82,14 +84,6 @@ public class DataGenProperties {
 		return mainResourceDirs;
 	}
 
-	public Path getGeneratedJavaDir() {
-		return generatedJavaDir;
-	}
-
-	public Path getGeneratedResourceDir() {
-		return generatedResourceDir;
-	}
-
 	/**
 	 *
 	 */
@@ -110,9 +104,9 @@ public class DataGenProperties {
 
 				String topDir = String.format("%s%s", buildRootDir.getAbsolutePath(), File.separator);
 
-				this.dataGenProperties.ddDir = String.format("%s%s", topDir, DD_NEW);
-				this.dataGenProperties.dsDir = String.format("%s%s", topDir, DS_NEW);
-				this.dataGenProperties.dtDir = String.format("%s%s", topDir, DT_NEW);
+				this.dataGenProperties.ddDir = String.format("%s%s", topDir, DD_NEW).replace("/", File.separator);
+				this.dataGenProperties.dsDir = String.format("%s%s", topDir, DS_NEW).replace("/", File.separator);
+				this.dataGenProperties.dtDir = String.format("%s%s", topDir, DT_NEW).replace("/", File.separator);
 
 				Map<String, ?> properties = inProject.getProperties();
 
@@ -128,14 +122,14 @@ public class DataGenProperties {
 					String absolutePath = f.getAbsolutePath();
 					Path path = Paths.get(absolutePath);
 					this.dataGenProperties.mainJavaDirs.add(path);
-					if (absolutePath.matches(GENERATED)) {
-						this.dataGenProperties.generatedJavaDir = path;
-					}
+//					if (absolutePath.matches(GENERATED)) {
+//						this.dataGenProperties.generatedJavaDir = path;
+//					}
 				});
 
-				if (null == this.dataGenProperties.generatedJavaDir) {
-					this.dataGenProperties.generatedJavaDir = DEFAULT_GEN_JAVA_PATH;
-				}
+//				if (null == this.dataGenProperties.generatedJavaDir) {
+//					this.dataGenProperties.generatedJavaDir = DEFAULT_GEN_JAVA_PATH;
+//				}
 
 				// Done adding mainJavaDirs
 
@@ -148,16 +142,15 @@ public class DataGenProperties {
 							if (absolutePath.matches(RESOURCES)) {
 								Path path = Paths.get(absolutePath);
 								this.dataGenProperties.mainResourceDirs.add(path);
-								if (absolutePath.matches(GENERATED)) {
-									this.dataGenProperties.generatedResourceDir = path;
-								}
+//								if (absolutePath.matches(GENERATED)) {
+//									this.dataGenProperties.generatedResourceDir = path;
+//								}
 							}
 						});
 
-				if (null == this.dataGenProperties.generatedResourceDir) {
-					this.dataGenProperties.generatedResourceDir = DEFAULT_GEN_RESOURCE_PATH;
-				}
-
+//				if (null == this.dataGenProperties.generatedResourceDir) {
+//					this.dataGenProperties.generatedResourceDir = DEFAULT_GEN_RESOURCE_PATH;
+//				}
 			} catch (Exception e) {
 				throw new IllegalArgumentException(e);
 			}
@@ -183,6 +176,9 @@ public class DataGenProperties {
 		}
 
 		public DataGenProperties build() {
+			this.dataGenProperties.ddDir = this.dataGenProperties.ddDir.replace("/", File.separator);
+			this.dataGenProperties.dsDir = this.dataGenProperties.dsDir.replace("/", File.separator);
+			this.dataGenProperties.dtDir = this.dataGenProperties.dtDir.replace("/", File.separator);
 			return this.dataGenProperties;
 		}
 	}
