@@ -1,12 +1,14 @@
 package org.saul.gradle.datadefinition.helper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.Set;
 import org.gradle.api.Project;
 import org.saul.gradle.datadefinition.JsonMapperHelper;
@@ -23,15 +25,15 @@ import org.slf4j.LoggerFactory;
 /**
  *
  */
-public class DxSetup {
+public class SaulSetup {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DxSetup.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SaulSetup.class);
 
 	public static final String FTP_EXTENSION = "ftl";
 
 	private static DataGenProperties propertyPacket;
 
-	private DxSetup() {
+	private SaulSetup() {
 	}
 
 	/**
@@ -137,7 +139,6 @@ public class DxSetup {
 	private static SaulMasterDefinitions readYamlSources(DataGenProperties inPropertyPacket) {
 
 		SaulMasterDefinitions masterDefinitions = null;
-
 		try {
 			Set<SaulDataSource> sourceSet = readAllSources(inPropertyPacket);
 			Set<SaulDataDefinition> definitionSet = readAllDefinitions(inPropertyPacket);
@@ -184,15 +185,29 @@ public class DxSetup {
 	 *
 	 */
 	private static Set<SaulDataSource> readAllSources(DataGenProperties inPropertyPacket) {
+		return readAllSources(inPropertyPacket.getDsDirPath()
+				.toFile());
+	}
 
-		Set<SaulDataSource> SourceSet = Sets.newHashSet();
-		File topDir = inPropertyPacket.getDsDirPath()
-				.toFile();
-		File[] files = topDir.listFiles();
+	/**
+	 *
+	 */
+	public static Map<String, SaulDataSource> readAllSourcesIntoMap(File inTopDog) {
+		Map<String, SaulDataSource> map = Maps.newHashMap();
+		Set<SaulDataSource> set = readAllSources(inTopDog);
+		set.forEach(ds -> map.put(ds.getName(), ds));
+		return map;
+	}
 
-		if (!topDir.exists()) {
-			throw new IllegalArgumentException(String.format("The directory '%s' doesn't exist", topDir.getName()));
+	/**
+	 *
+	 */
+	public static Set<SaulDataSource> readAllSources(File inTopDog) {
+		if (!inTopDog.exists()) {
+			throw new IllegalArgumentException(String.format("The directory '%s' doesn't exist", inTopDog.getName()));
 		}
+		Set<SaulDataSource> SourceSet = Sets.newHashSet();
+		File[] files = inTopDog.listFiles();
 
 		for (final File file : files) {
 			SourceSet.addAll(readSources(file));
@@ -203,7 +218,7 @@ public class DxSetup {
 	/**
 	 *
 	 */
-	private static Set<SaulDataSource> readSources(File inFile) {
+	public static Set<SaulDataSource> readSources(File inFile) {
 		try {
 			final ObjectMapper mapper = JsonMapperHelper.newInstanceYaml();
 			final SaulDataSources dataSources = mapper.readValue(inFile, SaulDataSources.class);
@@ -251,10 +266,35 @@ public class DxSetup {
 	/**
 	 *
 	 */
-	private static SaulDataDefinition readDefinition(File inFile) {
+	public static SaulDataDefinition readDefinition(File inFile) {
 		try {
 			final ObjectMapper mapper = JsonMapperHelper.newInstanceYaml();
 			final SaulDataDefinition dataDefinition = mapper.readValue(inFile, SaulDataDefinition.class);
+
+			System.out.println(".....................................................................");
+			System.out.println(".....................................................................");
+			System.out.println("...............");
+			System.out.println("...............");
+			System.out.println(dataDefinition.dumpToString());
+			System.out.println("...............");
+			System.out.println("...............");
+			System.out.println(".....................................................................");
+			System.out.println(".....................................................................");
+			return dataDefinition;
+		} catch (Exception e) {
+			LOG.error(ExceptionHelper.toString(e));
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	/**
+	 *
+	 */
+	public static SaulDataDefinition readDefinition(String inYaml) {
+		try {
+			final ObjectMapper mapper = JsonMapperHelper.newInstanceYaml();
+			final SaulDataDefinition dataDefinition = mapper.readValue(inYaml, SaulDataDefinition.class);
+
 			System.out.println(".....................................................................");
 			System.out.println(".....................................................................");
 			System.out.println("...............");

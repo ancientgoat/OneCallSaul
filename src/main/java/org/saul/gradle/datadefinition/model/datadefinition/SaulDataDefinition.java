@@ -27,10 +27,14 @@ public class SaulDataDefinition implements SaulHasName {
 	private static final String DATA_SRC_DIR = "saul/datasource/";
 	private static final String DATA_TEMP_DIR = "saul/templates/";
 
+	private static final String GENERATED = "generated/";
+
 	public static final String DATA_DEF_FILE_PATH = "generated-sources/src/main/resources";
 
-	public static final String FILE_PATH_DATA_DEF = String.format("%s/%s", DATA_DEF_FILE_PATH, DATA_DEF_DIR)
-			.replace("/", File.separator);
+	public static final String FILE_OUTPUT_PATH_DATA_DEF =
+			String.format("%s/%s/%s", DATA_DEF_FILE_PATH, DATA_DEF_DIR, GENERATED)
+					.replace("//", "/")
+					.replace("/", File.separator);
 
 	public static final String FILE_PATH_SOURCE_DEF = String.format("%s/%s", DATA_DEF_FILE_PATH, DATA_SRC_DIR)
 			.replace("/", File.separator);
@@ -165,7 +169,7 @@ public class SaulDataDefinition implements SaulHasName {
 
 	@JsonIgnore
 	public static String getDataDefOutputDirectory() {
-		return FILE_PATH_DATA_DEF;
+		return FILE_OUTPUT_PATH_DATA_DEF;
 	}
 
 	@JsonIgnore

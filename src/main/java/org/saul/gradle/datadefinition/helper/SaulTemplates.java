@@ -53,17 +53,11 @@ public class SaulTemplates {
 				.getAbsolutePath();
 
 		Path templateStartPath = inProps.getDtDirPath();
-
 		String className = inDataDef.getClassName();
 
 		templatePaths.forEach(templatePath -> {
 
 			String templateDirString = templatePath.toString();
-
-			//			System.out.println("+++++++++++++++ TEMPLATE PATH +++++++++++++++++++");
-			//			System.out.println(templateDirString);
-			//			System.out.println(templateDirString);
-			//			System.out.println("+++++++++++++++ TEMPLATE PATH +++++++++++++++++++");
 
 			Path outputPath = SaulFileType.getFileType(templatePath)
 					.getDirPath();
@@ -79,22 +73,22 @@ public class SaulTemplates {
 			String newFileName = getNewFileName(templatePath);
 			String newerFileName = newFileName.replace("ClassName", className);
 
-			File newPath = new File(String.format("%s%s%s", newDirString, separator, newFileName));
+			File newPath = new File(String.format("%s%s%s", newDirString, separator, newerFileName));
 			String newPathString = newPath.getAbsolutePath();
 
-			//			System.out.println("====================================================================================");
-			//			System.out.println("templateStartPath      : " + templateStartPath);
-			//			System.out.println("templateRelativeDirString : " + templateRelativeDirString);
-			//			System.out.println("templatePath           : " + templatePath);
-			//			System.out.println("newFileName            : " + newFileName);
-			//			System.out.println("newerFileName          : " + newerFileName);
-			//			System.out.println("templateDirString      : " + templateDirString);
-			//			System.out.println("outputPath             : " + outputPath.toFile()
-			//					.getAbsolutePath());
-			//			System.out.println("newPathString          : " + newDirString);
-			//			System.out.println("buildDirString         : " + buildDirString);
-			//			System.out.println("newPathString          : " + newPathString);
-			//			System.out.println("===========");
+			System.out.println("====================================================================================");
+			System.out.println("templateStartPath      : " + templateStartPath);
+			System.out.println("templateRelativeDirString : " + templateRelativeDirString);
+			System.out.println("templatePath           : " + templatePath);
+			System.out.println("newFileName            : " + newFileName);
+			System.out.println("newerFileName          : " + newerFileName);
+			System.out.println("templateDirString      : " + templateDirString);
+			System.out.println("outputPath             : " + outputPath.toFile()
+					.getAbsolutePath());
+			System.out.println("newPathString          : " + newDirString);
+			System.out.println("buildDirString         : " + buildDirString);
+			System.out.println("newPathString          : " + newPathString);
+			System.out.println("===========");
 
 			try {
 				FileWriter fileWriter = new FileWriter(newPathString);
@@ -109,9 +103,9 @@ public class SaulTemplates {
 						.replace(templateStartPath.toString(), "")
 						.replace(File.separator, "/");
 
-				//				System.out.println("filename           : " + filename);
-				//				System.out.println("fullFilename       : " + fullFilename);
-				//				System.out.println("absolutePath       : " + absolutePath);
+				System.out.println("filename           : " + filename);
+				System.out.println("fullFilename       : " + fullFilename);
+				System.out.println("absolutePath       : " + absolutePath);
 
 				Template template = inConfiguration.getTemplate(absolutePath);
 				template.process(inDataDef, fileWriter);
@@ -120,7 +114,7 @@ public class SaulTemplates {
 			} catch (Exception e) {
 				throw new IllegalArgumentException(e);
 			}
-			//			System.out.println("====================================================================================");
+			System.out.println("====================================================================================");
 		});
 	}
 

@@ -16,18 +16,18 @@ import org.gradle.api.tasks.SourceSet;
  */
 public class DataGenProperties {
 
-	private static final String DD_NEW = "src/main/resources/saul/datadef/";
-	private static final String DS_NEW = "src/main/resources/saul/datasource/";
-	private static final String DT_NEW = "src/main/resources/saul/templates/";
+	public static final String DD_SHORT = "saul/datadef/";
+	public static final String DS_SHORT = "saul/datasource/";
+	public static final String DT_SHORT = "saul/templates/";
 
-	//	private static final Path DEFAULT_GEN_JAVA_PATH = Paths.get("generated-sources/src/main/java/");
-	//	private static final Path DEFAULT_GEN_RESOURCE_PATH =
-	//			Paths.get("generated-sources/src/main/resources/");
+	public static final String DD_NEW = String.format("src/main/resources/%s", DD_SHORT);
+	public static final String DS_NEW = String.format("src/main/resources/%s", DS_SHORT);
+	public static final String DT_NEW = String.format("src/main/resources/%s", DT_SHORT);
 
-	private static final String GENERATED = "generated";
-	private static final String RESOURCES = "resources";
-	private static final String SOURCE_SETS = "sourceSets";
-	private static final String MAIN = "main";
+	public static final String GENERATED = "generated";
+	public static final String RESOURCES = "resources";
+	public static final String SOURCE_SETS = "sourceSets";
+	public static final String MAIN = "main";
 
 	private Project project;
 	private String ddDir;
@@ -135,14 +135,7 @@ public class DataGenProperties {
 					String absolutePath = f.getAbsolutePath();
 					Path path = Paths.get(absolutePath);
 					this.dataGenProperties.mainJavaDirs.add(path);
-					//					if (absolutePath.matches(GENERATED)) {
-					//						this.dataGenProperties.generatedJavaDir = path;
-					//					}
 				});
-
-				//				if (null == this.dataGenProperties.generatedJavaDir) {
-				//					this.dataGenProperties.generatedJavaDir = DEFAULT_GEN_JAVA_PATH;
-				//				}
 
 				// Done adding mainJavaDirs
 
@@ -155,15 +148,8 @@ public class DataGenProperties {
 							if (absolutePath.matches(RESOURCES)) {
 								Path path = Paths.get(absolutePath);
 								this.dataGenProperties.mainResourceDirs.add(path);
-								//								if (absolutePath.matches(GENERATED)) {
-								//									this.dataGenProperties.generatedResourceDir = path;
-								//								}
 							}
 						});
-
-				//				if (null == this.dataGenProperties.generatedResourceDir) {
-				//					this.dataGenProperties.generatedResourceDir = DEFAULT_GEN_RESOURCE_PATH;
-				//				}
 			} catch (Exception e) {
 				throw new IllegalArgumentException(e);
 			}

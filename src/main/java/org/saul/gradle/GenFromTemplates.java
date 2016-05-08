@@ -3,7 +3,6 @@ package org.saul.gradle;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.Project;
 import org.gradle.api.tasks.TaskAction;
-import org.saul.gradle.datadefinition.helper.DxSetup;
 
 /**
  *
@@ -17,7 +16,7 @@ public class GenFromTemplates extends DefaultTask {
 		System.out.println("----------------------------------------------------------");
 
 		throw new IllegalArgumentException("OUCH!!!!!!!!!!!!");
-		//DxSetup.genFromTemplates(project);
+		//SaulSetup.genFromTemplates(project);
 //
 //		System.out.println("----------------------------------------------------------");
 //

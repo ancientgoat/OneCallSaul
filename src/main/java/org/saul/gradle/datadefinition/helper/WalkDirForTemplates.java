@@ -14,7 +14,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Set;
 
 import static java.nio.file.FileVisitResult.CONTINUE;
-import static org.saul.gradle.datadefinition.helper.DxSetup.FTP_EXTENSION;
+import static org.saul.gradle.datadefinition.helper.SaulSetup.FTP_EXTENSION;
 
 /**
  * We walk a directory tree and save the relative path , from the top path, with each dataDefinition.
