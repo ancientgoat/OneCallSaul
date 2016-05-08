@@ -4,15 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Set;
-import java.util.stream.Stream;
 import org.gradle.api.Project;
 import org.saul.gradle.datadefinition.JsonMapperHelper;
 import org.saul.gradle.datadefinition.model.datadefinition.SaulDataDefinition;
@@ -24,8 +19,6 @@ import org.saul.gradle.property.SaulDataSources;
 import org.saul.gradle.util.ExceptionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static java.nio.file.FileVisitResult.CONTINUE;
 
 /**
  *
@@ -46,15 +39,16 @@ public class DxSetup {
 	 */
 	public static void genDataDef(Project inProject) {
 		readProperties(inProject);
-		genDataDefinitions(propertyPacket);
-	}
-
-	/**
-	 *
-	 */
-	public static void genFromTemplates(Project inProject) {
-		readProperties(inProject);
-		SaulTemplates.runTemplates(propertyPacket);
+		SaulMasterDefinitions saulMasterDefinitions = getSaulMasterDefinitions(propertyPacket);
+		Set<Path> templateOutputPaths = genDataDefinitions(propertyPacket, saulMasterDefinitions);
+		//	}
+		//
+		//	/**
+		//	 *
+		//	 */
+		//	public static void genFromTemplates(Project inProject) {
+		//		readProperties(inProject);
+		SaulTemplates.runTemplates(propertyPacket, saulMasterDefinitions, templateOutputPaths);
 	}
 
 	/**
@@ -86,15 +80,18 @@ public class DxSetup {
 	/**
 	 *
 	 */
-	private static void genDataDefinitions(DataGenProperties inPropertyPacket) {
-		try {
-			final SaulMasterDefinitions masterDefinitions = getSaulMasterDefinitions(inPropertyPacket);
+	private static Set<Path> genDataDefinitions(DataGenProperties inPropertyPacket,
+			final SaulMasterDefinitions inSaulMasterDefinitions) {
 
-			for (final SaulDataDefinition dataDef : masterDefinitions.getDataDefinitionSet()) {
+		Set<Path> outputPaths = Sets.newHashSet();
+
+		try {
+
+			for (final SaulDataDefinition dataDef : inSaulMasterDefinitions.getDataDefinitionSet()) {
 
 				// Write Data Definitions out to a set of beans.
-				final SaulDdHelper helper = new SaulDdHelper(dataDef);
-				final SaulDataDefinition newDataDef = helper.fillDataDefFromSql();
+				SaulDdHelper helper = new SaulDdHelper(dataDef);
+				SaulDataDefinition newDataDef = helper.fillDataDefFromSql();
 
 				String buildDir = inPropertyPacket.getProject()
 						.getBuildDir()
@@ -104,7 +101,8 @@ public class DxSetup {
 				String outputFileDir =
 						String.format("%s%s%s%s", buildDir, File.separator, outputDirectory, File.separator);
 
-				String fullFilename = JsonMapperHelper.writeBeanToYamlFile(outputFileDir, fileName, newDataDef);
+				String fullFilename =
+						JsonMapperHelper.writeBeanToYamlFile(outputFileDir, fileName, newDataDef, "dataDefinition");
 
 				System.out.println("********************************************");
 				System.out.println("********************************************");
@@ -113,16 +111,24 @@ public class DxSetup {
 				System.out.println("Filename        : " + fileName);
 				System.out.println("outputDirectory : " + outputDirectory);
 				System.out.println("FullFilename    : " + fullFilename);
-				System.out.println("********************************************");
+				System.out.println("********************");
 				System.out.println(JsonMapperHelper.writeBeanToYaml(newDataDef));
 				System.out.println("********************************************");
 				System.out.println("********************************************");
 				System.out.println("********************************************");
+
+				outputPaths.add(Paths.get(fullFilename));
+				SaulDataDefinition localDataDef = readDefinition(new File(fullFilename));
+				System.out.println("************************** ===========================");
+				System.out.println(localDataDef.dumpToString());
+				System.out.println("************************** ===========================");
+				inSaulMasterDefinitions.addGeneratedDataDefinition(localDataDef);
 			}
 		} catch (Exception e) {
 			LOG.error(ExceptionHelper.toString(e));
 			throw new IllegalArgumentException(e);
 		}
+		return outputPaths;
 	}
 
 	/**
@@ -136,7 +142,7 @@ public class DxSetup {
 			Set<SaulDataSource> sourceSet = readAllSources(inPropertyPacket);
 			Set<SaulDataDefinition> definitionSet = readAllDefinitions(inPropertyPacket);
 			Set<Path> templates = getTemplates(inPropertyPacket.getDtDir());
-			masterDefinitions = new SaulMasterDefinitions(definitionSet, sourceSet, templates);
+			masterDefinitions = new SaulMasterDefinitions(definitionSet, sourceSet, templates, inPropertyPacket);
 
 			for (final SaulDataDefinition dataDef : masterDefinitions.getDataDefinitionSet()) {
 				String dataSourceName = dataDef.getDataSourceName();
@@ -162,6 +168,7 @@ public class DxSetup {
 	 *
 	 */
 	private static Set<Path> getTemplates(String inTopDir) {
+
 		Path topPath = Paths.get(inTopDir);
 		WalkDirForTemplates walkDirForTemplates = new WalkDirForTemplates(topPath.toFile());
 		try {
@@ -235,6 +242,29 @@ public class DxSetup {
 			final ObjectMapper mapper = JsonMapperHelper.newInstanceYaml();
 			final SaulDataDefinitions dataDefinitions = mapper.readValue(inFile, SaulDataDefinitions.class);
 			return Sets.newHashSet(dataDefinitions.getSaulDataDefinitionList());
+		} catch (Exception e) {
+			LOG.error(ExceptionHelper.toString(e));
+			throw new IllegalArgumentException(e);
+		}
+	}
+
+	/**
+	 *
+	 */
+	private static SaulDataDefinition readDefinition(File inFile) {
+		try {
+			final ObjectMapper mapper = JsonMapperHelper.newInstanceYaml();
+			final SaulDataDefinition dataDefinition = mapper.readValue(inFile, SaulDataDefinition.class);
+			System.out.println(".....................................................................");
+			System.out.println(".....................................................................");
+			System.out.println("...............");
+			System.out.println("...............");
+			System.out.println(dataDefinition.dumpToString());
+			System.out.println("...............");
+			System.out.println("...............");
+			System.out.println(".....................................................................");
+			System.out.println(".....................................................................");
+			return dataDefinition;
 		} catch (Exception e) {
 			LOG.error(ExceptionHelper.toString(e));
 			throw new IllegalArgumentException(e);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.google.common.collect.Lists;
 
+import com.google.common.collect.Sets;
 import java.util.List;
 import java.util.Set;
 
@@ -13,31 +14,42 @@ import java.util.Set;
 @JsonRootName("DataDefinitions")
 public class SaulDataDefinitions {
 
-    @JsonProperty("dataDefinition")
-    private Set<SaulDataDefinition> saulDataDefinitionSet;
+	@JsonProperty("dataDefinition")
+	private Set<SaulDataDefinition> saulDataDefinitionSet = Sets.newHashSet();
 
-    public Set<SaulDataDefinition> getSaulDataDefinitionSet() {
-        return saulDataDefinitionSet;
-    }
+	public Set<SaulDataDefinition> getSaulDataDefinitionSet() {
+		return saulDataDefinitionSet;
+	}
 
-    public List<SaulDataDefinition> getSaulDataDefinitionList() {
-        return Lists.newArrayList(saulDataDefinitionSet);
-    }
+	@JsonProperty("dataDefinition")
+	public List<SaulDataDefinition> getSaulDataDefinitionList() {
+		return Lists.newArrayList(saulDataDefinitionSet);
+	}
 
-    /**
-     *
-     */
-    public String dumpToString() {
+	public SaulDataDefinitions setSaulDataDefinitionSet(final Set<SaulDataDefinition> inSaulDataDefinitionSet) {
+		saulDataDefinitionSet = inSaulDataDefinitionSet;
+		return this;
+	}
 
-        if (null == saulDataDefinitionSet) {
-            throw new IllegalArgumentException("Data Definitions can NOT be null.");
-        }
-        final StringBuilder sb = new StringBuilder();
+	public SaulDataDefinitions addSaulDataDefinition(final SaulDataDefinition inSaulDataDefinition) {
+		saulDataDefinitionSet.add(inSaulDataDefinition);
+		return this;
+	}
 
-        for (final SaulDataDefinition dataDef : saulDataDefinitionSet) {
-            sb.append(dataDef.dumpToString());
-        }
+	/**
+	 *
+	 */
+	public String dumpToString() {
 
-        return sb.toString();
-    }
+		if (null == saulDataDefinitionSet) {
+			throw new IllegalArgumentException("Data Definitions can NOT be null.");
+		}
+		final StringBuilder sb = new StringBuilder();
+
+		for (final SaulDataDefinition dataDef : saulDataDefinitionSet) {
+			sb.append(dataDef.dumpToString());
+		}
+
+		return sb.toString();
+	}
 }

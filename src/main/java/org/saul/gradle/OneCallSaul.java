@@ -18,7 +18,7 @@ public class OneCallSaul implements Plugin<Project> {
 		PROJECT = inProject;
 		TaskContainer tasks = inProject.getTasks();
 		tasks.create("genDataDef", GenDataDef.class);
-		tasks.create("genFromTemplate", GenFromTemplates.class);
+		//tasks.create("genFromTemplate", GenFromTemplates.class);
 	}
 
 	public static Project getProject() {

@@ -2,6 +2,8 @@ package org.saul.gradle.datadefinition.model.datadefinition;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.google.common.collect.Sets;
 import java.io.File;
 import java.util.Collection;
@@ -9,11 +11,13 @@ import java.util.Set;
 import org.saul.gradle.datadefinition.helper.SaulDdHelper;
 import org.saul.gradle.datadefinition.inf.SaulHasName;
 import org.saul.gradle.property.SaulDataSource;
+import org.saul.gradle.util.SaulStringHelper;
 
 /**
  *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonRootName("dataDefinition")
 public class SaulDataDefinition implements SaulHasName {
 
 	public static final String DATA_DEF_PREFIX = "DD";
@@ -25,15 +29,14 @@ public class SaulDataDefinition implements SaulHasName {
 
 	public static final String DATA_DEF_FILE_PATH = "generated-sources/src/main/resources";
 
-	public static final String FILE_PATH_DATA_DEF = String.format(
-			"%s/%s", DATA_DEF_FILE_PATH, DATA_DEF_DIR).replace("/", File.separator);
+	public static final String FILE_PATH_DATA_DEF = String.format("%s/%s", DATA_DEF_FILE_PATH, DATA_DEF_DIR)
+			.replace("/", File.separator);
 
-	public static final String FILE_PATH_SOURCE_DEF = String.format(
-			"%s/%s", DATA_DEF_FILE_PATH, DATA_SRC_DIR).replace("/", File.separator);
+	public static final String FILE_PATH_SOURCE_DEF = String.format("%s/%s", DATA_DEF_FILE_PATH, DATA_SRC_DIR)
+			.replace("/", File.separator);
 
-	public static final String FILE_PATH_TEMPLATE = String.format(
-			"%s/%s", DATA_DEF_FILE_PATH, DATA_TEMP_DIR).replace("/", File.separator);
-
+	public static final String FILE_PATH_TEMPLATE = String.format("%s/%s", DATA_DEF_FILE_PATH, DATA_TEMP_DIR)
+			.replace("/", File.separator);
 
 	private SaulIdentity identity;
 	private String source;
@@ -69,14 +72,22 @@ public class SaulDataDefinition implements SaulHasName {
 
 	@JsonIgnore
 	public void setDataSource(final SaulDataSource inDataSource) {
-		if (null == this.dataSource) {
-			dataSource = inDataSource;
-		}
+		dataSource = inDataSource;
 	}
 
 	@JsonIgnore
 	public SaulDataSource getDataSource() {
 		return dataSource;
+	}
+
+	@JsonIgnore
+	public String getClassName() {
+		return SaulStringHelper.toUpperCamel(this.identity.getNameUpper());
+	}
+
+	@JsonIgnore
+	public String getClassNameVariable() {
+		return SaulStringHelper.toLowerCamel(this.identity.getNameUpper());
 	}
 
 	public SaulDdHelper getDdHelper() {
@@ -116,39 +127,28 @@ public class SaulDataDefinition implements SaulHasName {
 	}
 
 	public void setDataSourceName(String dataSourceName) {
-		if (null == this.dataSourceName) {
-			this.dataSourceName = dataSourceName;
-		}
+		this.dataSourceName = dataSourceName;
 	}
 
 	public void setIdentity(SaulIdentity identity) {
-		if (null == this.identity) {
-			this.identity = identity;
-		}
+		this.identity = identity;
 	}
 
 	public void setSource(String source) {
-		if (null == this.source) {
-			this.source = source;
-		}
+		this.source = source;
 	}
 
 	public void setName(String name) {
-		if (null == this.name) {
-			this.name = name;
-		}
+		this.name = name;
 	}
 
 	public void setShortName(String shortName) {
-		if (null == this.shortName) {
-			this.shortName = shortName;
-		}
+		this.shortName = shortName;
 	}
 
+	@JsonProperty("fields")
 	public void setFields(Set<SaulDdField> fields) {
-		if (null == this.fields) {
-			this.fields = fields;
-		}
+		this.fields = fields;
 	}
 
 	@JsonIgnore
@@ -159,22 +159,22 @@ public class SaulDataDefinition implements SaulHasName {
 	}
 
 	@JsonIgnore
-	public String getJavaOutputDirectory() {
+	public static String getJavaOutputDirectory() {
 		return DATA_DEF_FILE_PATH.replace("/", File.separator);
 	}
 
 	@JsonIgnore
-	public String getDataDefOutputDirectory() {
+	public static String getDataDefOutputDirectory() {
 		return FILE_PATH_DATA_DEF;
 	}
 
 	@JsonIgnore
-	public String getDataSourceOutputDirectory() {
+	public static String getDataSourceOutputDirectory() {
 		return FILE_PATH_SOURCE_DEF;
 	}
 
 	@JsonIgnore
-	public String getTemplateOutputDirectory() {
+	public static String getTemplateOutputDirectory() {
 		return FILE_PATH_TEMPLATE;
 	}
 
@@ -187,6 +187,8 @@ public class SaulDataDefinition implements SaulHasName {
 				.append(String.format("dataSourceName : %s\n", dataSourceName))
 				.append(String.format("sql            : %s\n", sql));
 
+		sb.append(String.format("Fields      : %s \n", fields));
+		sb.append(String.format("Fields Size : %s \n", fields.size()));
 		for (final SaulDdField field : this.fields) {
 			sb.append(field.dumpToString());
 		}

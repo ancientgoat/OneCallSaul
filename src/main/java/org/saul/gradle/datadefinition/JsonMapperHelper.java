@@ -3,8 +3,12 @@ package org.saul.gradle.datadefinition;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
+import java.io.FileOutputStream;
+import java.io.StringWriter;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileWriter;
@@ -45,6 +49,7 @@ public class JsonMapperHelper {
 		// yamlFactory.configure(CANONICAL_OUTPUT, true);
 		final ObjectMapper mapper = new CustomMapper(yamlFactory);
 		mapper.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+		mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, true);
 		mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
 		mapper.enable(DeserializationFeature.USE_BIG_INTEGER_FOR_INTS);
 		// mapper.setPropertyNamingStrategy(new CamelCaseNamingStrategy());
@@ -80,10 +85,33 @@ public class JsonMapperHelper {
 		return writeMapperToString(inObject, newInstanceJson());
 	}
 
+	/**
+	 *
+	 */
 	private static String writeMapperToString(Object inObject, ObjectMapper inMapper) {
+		return writeMapperToString(inObject, inMapper, null);
+	}
+
+	/**
+	 *
+	 */
+	private static String writeMapperToString(Object inObject, ObjectMapper inMapper, String inRootName) {
 		try {
-			final String outputString = inMapper.writerWithDefaultPrettyPrinter()
-					.writeValueAsString(inObject);
+			ObjectWriter writer = inMapper.writer(); //WithDefaultPrettyPrinter();
+			if (null != inRootName) {
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inRootName);
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inRootName);
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inRootName);
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inObject);
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inObject);
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inObject);
+				writer.withRootName(inRootName);
+			}
+
+			StringWriter stringWriter = new StringWriter();
+			writer.writeValue(stringWriter, inObject); //.writeValueAsString(inObject);
+			//final String outputString = writer.writeValueAsString(inObject);
+			String outputString = stringWriter.toString();
 			return outputString;
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
@@ -94,12 +122,27 @@ public class JsonMapperHelper {
 	 *
 	 */
 	public static final String writeBeanToYamlFile(String inOutputDir, String inFileName, Object inObject) {
+		return writeBeanToYamlFile(inOutputDir, inFileName, inObject, null);
+	}
+
+	/**
+	 *
+	 */
+	public static final String writeBeanToYamlFile(String inOutputDir, String inFileName, Object inObject,
+			String inRootName) {
+
 		new File(inOutputDir).mkdirs();
 		String fullFileName = String.format("%s%s", inOutputDir, inFileName);
+		fullFileName = fullFileName.replace(File.separator + File.separator, File.separator);
 		if (LOG.isInfoEnabled()) {
-			LOG.info(String.format("Full Filename : '5s'", fullFileName));
+			LOG.info(String.format("writeBeanToYamlFile: Full Filename : '5s'", fullFileName));
 		}
-		final String yamlString = writeMapperToString(inObject, newInstanceYaml());
+		System.out.println(String.format("writeBeanToYamlFile: Full Filename : '%s'", fullFileName));
+		System.out.println(String.format("writeBeanToYamlFile: Full Filename : '%s'", fullFileName));
+		System.out.println(String.format("writeBeanToYamlFile: Full Filename : '%s'", fullFileName));
+		final String yamlString = writeMapperToString(inObject, newInstanceYaml(), inRootName);
+
+		System.out.println("=== writeBeanToYamlFile === : \n" + yamlString);
 		writeMapperToFile(fullFileName, yamlString);
 		return fullFileName;
 	}
@@ -142,7 +185,7 @@ public class JsonMapperHelper {
 			// Uses Enum.toString() for deserialization of an Enum
 			this.enable(READ_ENUMS_USING_TO_STRING);
 
-			// this.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
+			this.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, true);
 			// this.setPropertyNamingStrategy(new CamelCaseNamingStrategy());
 			// this.getDeserializationConfig().findMixInClassFor(InpNodeBase.class);
 			// this.configure(SerializationFeature.INDENT_OUTPUT, true);

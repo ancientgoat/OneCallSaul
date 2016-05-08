@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import java.nio.file.Path;
 import org.saul.gradle.datadefinition.inf.SaulHasName;
+import org.saul.gradle.property.DataGenProperties;
 import org.saul.gradle.property.SaulDataSource;
 
 import java.util.Map;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class SaulMasterDefinitions {
 
 	private Set<SaulDataDefinition> dataDefinitionSet;
+	private Set<SaulDataDefinition> generatedDataDefinitionSet = Sets.newHashSet();
 	private Set<SaulDataSource> dataSourceSet;
 	private Set<Path> templates = Sets.newHashSet();
 	private final Map<String, SaulDataDefinition> dataDefinitionMap = Maps.newHashMap();
@@ -27,8 +29,8 @@ public class SaulMasterDefinitions {
 	/**
 	 *
 	 */
-	public SaulMasterDefinitions(final Set<SaulDataDefinition> inDataDefinitionSet,
-			final Set<SaulDataSource> inDataSourceSet, final Set<Path> inTemplates) {
+	public SaulMasterDefinitions(Set<SaulDataDefinition> inDataDefinitionSet, Set<SaulDataSource> inDataSourceSet,
+			Set<Path> inTemplates, DataGenProperties inProps) {
 
 		this.dataDefinitionSet = inDataDefinitionSet;
 		this.dataSourceSet = inDataSourceSet;
@@ -38,6 +40,31 @@ public class SaulMasterDefinitions {
 		buildMaps();
 		masterDefinitions = this;
 	}
+
+	//	/**
+	//	 *
+	//	 */
+	//	private Set<Path> makeGeneratedDataDefinitionSet(Set<SaulDataDefinition> inTemplates, DataGenProperties inProps) {
+	//
+	//		Set<Path> generatedTemplates = Sets.newHashSet();
+	//
+	//		inTemplates.forEach(t -> {
+	//
+	//			String relativeDirString = t.toString()
+	//					.replace(inProps.getDtDir(), "");
+	//
+	//			String newDirString = SaulDataDefinition.getTemplateOutputDirectory();
+	//			String relativeFileName = String.format("%s%s", newDirString,relativeDirString );
+	//
+	//			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+	//			System.out.println(relativeFileName);
+	//			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+	//
+	//			generatedTemplates.add(Paths.get(relativeDirString));
+	//		});
+	//
+	//		return generatedTemplates;
+	//	}
 
 	/**
 	 *
@@ -124,6 +151,20 @@ public class SaulMasterDefinitions {
 	 */
 	public Set<SaulDataDefinition> getDataDefinitionSet() {
 		return dataDefinitionSet;
+	}
+
+	/**
+	 *
+	 */
+	public Set<SaulDataDefinition> getGeneratedDataDefinitionSet() {
+		return generatedDataDefinitionSet;
+	}
+
+	/**
+	 *
+	 */
+	public void addGeneratedDataDefinition(SaulDataDefinition inDataDef) {
+		generatedDataDefinitionSet.add(inDataDef);
 	}
 
 	/**

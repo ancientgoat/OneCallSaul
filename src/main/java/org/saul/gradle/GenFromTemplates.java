@@ -16,31 +16,32 @@ public class GenFromTemplates extends DefaultTask {
 
 		System.out.println("----------------------------------------------------------");
 
-		DxSetup.genFromTemplates(project);
-
-		System.out.println("----------------------------------------------------------");
-
-
-
-
-		System.out.println("-----------------------------------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----: GenFromTemplates : ---------");
-		System.out.println("-----------------------------------");
+		throw new IllegalArgumentException("OUCH!!!!!!!!!!!!");
+		//DxSetup.genFromTemplates(project);
+//
+//		System.out.println("----------------------------------------------------------");
+//
+//
+//
+//
+//		System.out.println("-----------------------------------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----: GenFromTemplates : ---------");
+//		System.out.println("-----------------------------------");
 	}
 }

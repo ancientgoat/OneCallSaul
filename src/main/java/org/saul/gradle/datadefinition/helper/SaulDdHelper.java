@@ -82,7 +82,7 @@ public class SaulDdHelper {
                         metaData.getColumnTypeName(i));
 
                 final SaulDdField field = new SaulDdField.Builder()                 //
-                        .setColumnName(metaData.getColumnName(i))                   //
+                        .setColumnName(metaData.getColumnName(i).toUpperCase())                   //
                         .setColumnClassName(metaData.getColumnClassName(i))         //
                         .setColumnType(metaData.getColumnType(i))                   //
                         .setColumnTypeName(metaData.getColumnTypeName(i))           //

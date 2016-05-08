@@ -20,9 +20,9 @@ public class DataGenProperties {
 	private static final String DS_NEW = "src/main/resources/saul/datasource/";
 	private static final String DT_NEW = "src/main/resources/saul/templates/";
 
-//	private static final Path DEFAULT_GEN_JAVA_PATH = Paths.get("generated-sources/src/main/java/");
-//	private static final Path DEFAULT_GEN_RESOURCE_PATH =
-//			Paths.get("generated-sources/src/main/resources/");
+	//	private static final Path DEFAULT_GEN_JAVA_PATH = Paths.get("generated-sources/src/main/java/");
+	//	private static final Path DEFAULT_GEN_RESOURCE_PATH =
+	//			Paths.get("generated-sources/src/main/resources/");
 
 	private static final String GENERATED = "generated";
 	private static final String RESOURCES = "resources";
@@ -44,36 +44,37 @@ public class DataGenProperties {
 	private DataGenProperties() {
 	}
 
-	public Path getBuildPath(){
-		return Paths.get(this.project.getBuildDir().getAbsolutePath());
+	public Path getBuildPath() {
+		return Paths.get(this.project.getBuildDir()
+				.getAbsolutePath());
 	}
 
 	public Project getProject() {
 		return project;
 	}
 
-	public Path getDtDirPath() {
-		return dtDirPath;
-	}
-
 	public String getDtDir() {
 		return dtDir;
-	}
-
-	public String getDdDir() {
-		return ddDir;
 	}
 
 	public Path getDdDirPath() {
 		return ddDirPath;
 	}
 
-	public String getDsDir() {
-		return dsDir;
-	}
-
 	public Path getDsDirPath() {
 		return dsDirPath;
+	}
+
+	public Path getDtDirPath() {
+		return dtDirPath;
+	}
+
+	public String getDdDir() {
+		return ddDir;
+	}
+
+	public String getDsDir() {
+		return dsDir;
 	}
 
 	public Set<Path> getMainJavaDirs() {
@@ -82,6 +83,15 @@ public class DataGenProperties {
 
 	public Set<Path> getMainResourceDirs() {
 		return mainResourceDirs;
+	}
+
+	public String dumpToString() {
+		return new StringBuilder()    //
+				.append("---------------------------------------------\n")
+				.append(String.format("ddDirPath : '%s' \n", ddDirPath))
+				.append(String.format("dsDirPath : '%s' \n", dsDirPath))
+				.append(String.format("dtDirPath : '%s' \n", dtDirPath))
+				.toString();
 	}
 
 	/**
@@ -104,9 +114,12 @@ public class DataGenProperties {
 
 				String topDir = String.format("%s%s", buildRootDir.getAbsolutePath(), File.separator);
 
-				this.dataGenProperties.ddDir = String.format("%s%s", topDir, DD_NEW).replace("/", File.separator);
-				this.dataGenProperties.dsDir = String.format("%s%s", topDir, DS_NEW).replace("/", File.separator);
-				this.dataGenProperties.dtDir = String.format("%s%s", topDir, DT_NEW).replace("/", File.separator);
+				this.dataGenProperties.ddDir = String.format("%s%s", topDir, DD_NEW)
+						.replace("/", File.separator);
+				this.dataGenProperties.dsDir = String.format("%s%s", topDir, DS_NEW)
+						.replace("/", File.separator);
+				this.dataGenProperties.dtDir = String.format("%s%s", topDir, DT_NEW)
+						.replace("/", File.separator);
 
 				Map<String, ?> properties = inProject.getProperties();
 
@@ -122,14 +135,14 @@ public class DataGenProperties {
 					String absolutePath = f.getAbsolutePath();
 					Path path = Paths.get(absolutePath);
 					this.dataGenProperties.mainJavaDirs.add(path);
-//					if (absolutePath.matches(GENERATED)) {
-//						this.dataGenProperties.generatedJavaDir = path;
-//					}
+					//					if (absolutePath.matches(GENERATED)) {
+					//						this.dataGenProperties.generatedJavaDir = path;
+					//					}
 				});
 
-//				if (null == this.dataGenProperties.generatedJavaDir) {
-//					this.dataGenProperties.generatedJavaDir = DEFAULT_GEN_JAVA_PATH;
-//				}
+				//				if (null == this.dataGenProperties.generatedJavaDir) {
+				//					this.dataGenProperties.generatedJavaDir = DEFAULT_GEN_JAVA_PATH;
+				//				}
 
 				// Done adding mainJavaDirs
 
@@ -142,15 +155,15 @@ public class DataGenProperties {
 							if (absolutePath.matches(RESOURCES)) {
 								Path path = Paths.get(absolutePath);
 								this.dataGenProperties.mainResourceDirs.add(path);
-//								if (absolutePath.matches(GENERATED)) {
-//									this.dataGenProperties.generatedResourceDir = path;
-//								}
+								//								if (absolutePath.matches(GENERATED)) {
+								//									this.dataGenProperties.generatedResourceDir = path;
+								//								}
 							}
 						});
 
-//				if (null == this.dataGenProperties.generatedResourceDir) {
-//					this.dataGenProperties.generatedResourceDir = DEFAULT_GEN_RESOURCE_PATH;
-//				}
+				//				if (null == this.dataGenProperties.generatedResourceDir) {
+				//					this.dataGenProperties.generatedResourceDir = DEFAULT_GEN_RESOURCE_PATH;
+				//				}
 			} catch (Exception e) {
 				throw new IllegalArgumentException(e);
 			}
@@ -164,9 +177,11 @@ public class DataGenProperties {
 
 			this.dataGenProperties.ddDirPath = Paths.get(this.dataGenProperties.ddDir);
 			this.dataGenProperties.dsDirPath = Paths.get(this.dataGenProperties.dsDir);
+			this.dataGenProperties.dtDirPath = Paths.get(this.dataGenProperties.dtDir);
 
 			exists(this.dataGenProperties.ddDirPath.toFile());
 			exists(this.dataGenProperties.dsDirPath.toFile());
+			exists(this.dataGenProperties.dtDirPath.toFile());
 		}
 
 		public void exists(File inFile) {
