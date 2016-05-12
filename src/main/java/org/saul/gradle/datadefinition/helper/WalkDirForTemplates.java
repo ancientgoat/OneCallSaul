@@ -26,6 +26,9 @@ public class WalkDirForTemplates implements FileVisitor<Path> {
 	private WalkDirForTemplates() {
 	}
 
+	/**
+	 *
+	 */
 	public WalkDirForTemplates(File inTopDir) {
 		if (!inTopDir.exists()) {
 			throw new IllegalArgumentException(

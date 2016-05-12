@@ -1,17 +1,16 @@
 package org.saul.gradle.datadefinition.helper;
 
 import com.google.common.collect.Lists;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSetMetaData;
+import java.util.List;
+import javax.sql.DataSource;
 import org.saul.gradle.datadefinition.model.conversion.DataTypeToJavaType;
 import org.saul.gradle.datadefinition.model.conversion.JavaTypePacket;
 import org.saul.gradle.datadefinition.model.datadefinition.SaulDataDefinition;
 import org.saul.gradle.datadefinition.model.datadefinition.SaulDdField;
 import org.saul.gradle.property.SaulDataSource;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSetMetaData;
-import java.util.List;
 
 /**
  *
@@ -68,10 +67,15 @@ public class SaulDdHelper {
 
 		final String sql = this.definitionDto.getSql();
 
+		SaulDataSource saulDataSource = this.definitionDto.getDataSource();
+		DataSource dataSource = saulDataSource.getDataSource();
+		Connection connection = null;
 		try {
-			SaulDataSource saulDataSource = this.definitionDto.getDataSource();
-			DataSource dataSource = saulDataSource.getDataSource();
-			Connection connection = dataSource.getConnection();
+			connection = dataSource.getConnection();
+		} catch (Exception e) {
+			throw new IllegalArgumentException(saulDataSource.dumpToString(), e);
+		}
+		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			ResultSetMetaData metaData = preparedStatement.getMetaData();
 			List<SaulDdField> newFieldList = Lists.newArrayList();

@@ -4,13 +4,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import java.nio.file.Path;
+import java.util.Map;
+import java.util.Set;
 import org.saul.gradle.datadefinition.inf.SaulHasName;
 import org.saul.gradle.property.DataGenProperties;
 import org.saul.gradle.property.SaulDataSource;
-
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -190,8 +188,9 @@ public class SaulMasterDefinitions {
 	 *
 	 */
 	private <C extends SaulHasName> void makeMap(final Map<String, C> inMap, final Set<C> inSet) {
-		inMap.putAll(inSet.stream()
-				.collect(Collectors.toMap(C::getName, d -> d)));
+		inSet.forEach(s -> {
+			inMap.put(s.getName(), s);
+		});
 	}
 
 	/**

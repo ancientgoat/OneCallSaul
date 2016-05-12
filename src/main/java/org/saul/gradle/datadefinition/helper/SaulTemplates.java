@@ -4,7 +4,6 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
 import org.saul.gradle.datadefinition.model.datadefinition.SaulDataDefinition;
@@ -12,7 +11,6 @@ import org.saul.gradle.datadefinition.model.datadefinition.SaulMasterDefinitions
 import org.saul.gradle.enums.SaulFileType;
 import org.saul.gradle.property.DataGenProperties;
 import org.saul.gradle.util.SaulTemplateHelper;
-import org.springframework.core.io.ClassPathResource;
 
 import static java.io.File.separator;
 
@@ -63,18 +61,18 @@ public class SaulTemplates {
 					.getDirPath();
 
 			String templateRelativeDirString = templatePath.toString()
-					.replace(templateDirString, "");
+					.replace(templateStartPath.toString(), "");
 			if (templateRelativeDirString.startsWith(separator))
 				templateRelativeDirString = templateRelativeDirString.substring(1);
 
 			String newDirString = String.format("%s%s%s", buildDirString, separator, outputPath);
-			new File(newDirString).mkdirs();
 
-			String newFileName = getNewFileName(templatePath);
+			String newFileName = getNewFileName(templateRelativeDirString);
 			String newerFileName = newFileName.replace("ClassName", className);
 
 			File newPath = new File(String.format("%s%s%s", newDirString, separator, newerFileName));
 			String newPathString = newPath.getAbsolutePath();
+			newPath.getParentFile().mkdirs();
 
 			System.out.println("====================================================================================");
 			System.out.println("templateStartPath      : " + templateStartPath);
@@ -125,6 +123,10 @@ public class SaulTemplates {
 		return inPath.toFile()
 				.getName()
 				.replace(".ftl", "");
+	}
+
+	private static String getNewFileName(String inName) {
+		return inName.replace(".ftl", "");
 	}
 }
 

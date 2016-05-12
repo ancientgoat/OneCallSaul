@@ -69,8 +69,10 @@ public class SaulDataSource implements SaulHasName {
     public DataSource getDataSource() {
         validateDataSource();
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.driverClassName(this.driverClassName);
-        dataSourceBuilder.url(this.url);
+        dataSourceBuilder.driverClassName(this.getDriverClassName());
+        dataSourceBuilder.url(this.getUrl());
+        dataSourceBuilder.username(this.getUsername());
+        dataSourceBuilder.password(this.getPassword());
         return dataSourceBuilder.build();
     }
 

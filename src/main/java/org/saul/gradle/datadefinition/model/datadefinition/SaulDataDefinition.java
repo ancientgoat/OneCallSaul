@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.google.common.collect.Sets;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import org.saul.gradle.datadefinition.helper.SaulDdHelper;
 import org.saul.gradle.datadefinition.inf.SaulHasName;
@@ -160,6 +162,15 @@ public class SaulDataDefinition implements SaulHasName {
 		final String fullFileName =
 				String.format("%s_%s%s", DATA_DEF_PREFIX, getIdentity().getName(), DATA_DEF_FILE_EXTENSION);
 		return fullFileName;
+	}
+
+	@JsonIgnore
+	public List<String> getImports() {
+		Set<String> importSet = Sets.newHashSet();
+		this.fields.forEach(f -> {
+			importSet.add(String.format("import %s;", f.getColumnClassName()));
+		});
+		return new ArrayList<String>(importSet);
 	}
 
 	@JsonIgnore
