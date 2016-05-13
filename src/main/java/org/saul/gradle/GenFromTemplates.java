@@ -13,7 +13,7 @@ public class GenFromTemplates extends DefaultTask {
 
 		Project project = OneCallSaul.getProject();
 
-		System.out.println("----------------------------------------------------------");
+		//System.out.println("----------------------------------------------------------");
 
 		throw new IllegalArgumentException("OUCH!!!!!!!!!!!!");
 		//SaulSetup.genFromTemplates(project);

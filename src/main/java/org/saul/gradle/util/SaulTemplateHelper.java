@@ -34,7 +34,7 @@ public class SaulTemplateHelper {
 			// plain directory for it, but non-file-system sources are possible too:
 			ClassPathResource resource = new ClassPathResource("resources");
 
-			System.out.println(inProps.dumpToString());
+			//System.out.println(inProps.dumpToString());
 
 			cfg.setDirectoryForTemplateLoading(inProps.getDtDirPath().toFile());
 

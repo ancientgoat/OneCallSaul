@@ -99,12 +99,12 @@ public class JsonMapperHelper {
 		try {
 			ObjectWriter writer = inMapper.writer(); //WithDefaultPrettyPrinter();
 			if (null != inRootName) {
-				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inRootName);
-				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inRootName);
-				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inRootName);
-				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inObject);
-				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inObject);
-				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inObject);
+				//System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inRootName);
+				//System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inRootName);
+				//System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inRootName);
+				//System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inObject);
+				//System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inObject);
+				//System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!! Root Name : " + inObject);
 				writer.withRootName(inRootName);
 			}
 
@@ -137,12 +137,12 @@ public class JsonMapperHelper {
 		if (LOG.isInfoEnabled()) {
 			LOG.info(String.format("writeBeanToYamlFile: Full Filename : '5s'", fullFileName));
 		}
-		System.out.println(String.format("writeBeanToYamlFile: Full Filename : '%s'", fullFileName));
-		System.out.println(String.format("writeBeanToYamlFile: Full Filename : '%s'", fullFileName));
-		System.out.println(String.format("writeBeanToYamlFile: Full Filename : '%s'", fullFileName));
+		//System.out.println(String.format("writeBeanToYamlFile: Full Filename : '%s'", fullFileName));
+		//System.out.println(String.format("writeBeanToYamlFile: Full Filename : '%s'", fullFileName));
+		//System.out.println(String.format("writeBeanToYamlFile: Full Filename : '%s'", fullFileName));
 		final String yamlString = writeMapperToString(inObject, newInstanceYaml(), inRootName);
 
-		System.out.println("=== writeBeanToYamlFile === : \n" + yamlString);
+		//System.out.println("=== writeBeanToYamlFile === : \n" + yamlString);
 		writeMapperToFile(fullFileName, yamlString);
 		return fullFileName;
 	}

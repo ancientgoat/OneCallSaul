@@ -106,24 +106,24 @@ public class SaulSetup {
 				String fullFilename =
 						JsonMapperHelper.writeBeanToYamlFile(outputFileDir, fileName, newDataDef, "dataDefinition");
 
-				System.out.println("********************************************");
-				System.out.println("********************************************");
-				System.out.println("********************************************");
-				System.out.println("outputFileDir   : " + outputFileDir);
-				System.out.println("Filename        : " + fileName);
-				System.out.println("outputDirectory : " + outputDirectory);
-				System.out.println("FullFilename    : " + fullFilename);
-				System.out.println("********************");
-				System.out.println(JsonMapperHelper.writeBeanToYaml(newDataDef));
-				System.out.println("********************************************");
-				System.out.println("********************************************");
-				System.out.println("********************************************");
+				// System.out.println("********************************************");
+				// System.out.println("********************************************");
+				// System.out.println("********************************************");
+				// System.out.println("outputFileDir   : " + outputFileDir);
+				// System.out.println("Filename        : " + fileName);
+				// System.out.println("outputDirectory : " + outputDirectory);
+				// System.out.println("FullFilename    : " + fullFilename);
+				// System.out.println("********************");
+				// System.out.println(JsonMapperHelper.writeBeanToYaml(newDataDef));
+				// System.out.println("********************************************");
+				// System.out.println("********************************************");
+				// System.out.println("********************************************");
 
 				outputPaths.add(Paths.get(fullFilename));
 				SaulDataDefinition localDataDef = readDefinition(new File(fullFilename));
-				System.out.println("************************** ===========================");
-				System.out.println(localDataDef.dumpToString());
-				System.out.println("************************** ===========================");
+				// System.out.println("************************** ===========================");
+				// System.out.println(localDataDef.dumpToString());
+				// System.out.println("************************** ===========================");
 				inSaulMasterDefinitions.addGeneratedDataDefinition(localDataDef);
 			}
 		} catch (Exception e) {
@@ -271,15 +271,15 @@ public class SaulSetup {
 			final ObjectMapper mapper = JsonMapperHelper.newInstanceYaml();
 			final SaulDataDefinition dataDefinition = mapper.readValue(inFile, SaulDataDefinition.class);
 
-			System.out.println(".....................................................................");
-			System.out.println(".....................................................................");
-			System.out.println("...............");
-			System.out.println("...............");
-			System.out.println(dataDefinition.dumpToString());
-			System.out.println("...............");
-			System.out.println("...............");
-			System.out.println(".....................................................................");
-			System.out.println(".....................................................................");
+//			System.out.println(".....................................................................");
+//			System.out.println(".....................................................................");
+//			System.out.println("...............");
+//			System.out.println("...............");
+//			System.out.println(dataDefinition.dumpToString());
+//			System.out.println("...............");
+//			System.out.println("...............");
+//			System.out.println(".....................................................................");
+//			System.out.println(".....................................................................");
 			return dataDefinition;
 		} catch (Exception e) {
 			LOG.error(ExceptionHelper.toString(e));
@@ -295,15 +295,15 @@ public class SaulSetup {
 			final ObjectMapper mapper = JsonMapperHelper.newInstanceYaml();
 			final SaulDataDefinition dataDefinition = mapper.readValue(inYaml, SaulDataDefinition.class);
 
-			System.out.println(".....................................................................");
-			System.out.println(".....................................................................");
-			System.out.println("...............");
-			System.out.println("...............");
-			System.out.println(dataDefinition.dumpToString());
-			System.out.println("...............");
-			System.out.println("...............");
-			System.out.println(".....................................................................");
-			System.out.println(".....................................................................");
+			//System.out.println(".....................................................................");
+			//System.out.println(".....................................................................");
+			//System.out.println("...............");
+			//System.out.println("...............");
+			//System.out.println(dataDefinition.dumpToString());
+			//System.out.println("...............");
+			//System.out.println("...............");
+			//System.out.println(".....................................................................");
+			//System.out.println(".....................................................................");
 			return dataDefinition;
 		} catch (Exception e) {
 			LOG.error(ExceptionHelper.toString(e));

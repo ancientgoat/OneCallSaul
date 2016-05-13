@@ -12,8 +12,8 @@ public class GenDataDef extends DefaultTask {
 	@TaskAction
 	public void genDataDef() {
 		Project project = OneCallSaul.getProject();
-		System.out.println("----------------------------------------------------------");
+		//System.out.println("----------------------------------------------------------");
 		SaulSetup.genDataDef(project);
-		System.out.println("----------------------------------------------------------");
+		//System.out.println("----------------------------------------------------------");
 	}
 }

@@ -90,6 +90,11 @@ public class SaulDdField {
 		return columnName;
 	}
 
+	@JsonIgnore
+	public String getColumnNameUpper() {
+		return (null != columnName ? columnName.toUpperCase() : null);
+	}
+
 	public Integer getColumnType() {
 		return columnType;
 	}
@@ -120,7 +125,7 @@ public class SaulDdField {
 
 	@JsonIgnore
 	public String getSetterName() {
-		System.out.println(String.format("Setter : %s : %s : %s", columnName, getPropertyUpper(), getPropertyName()));
+		//System.out.println(String.format("Setter : %s : %s : %s", columnName, getPropertyUpper(), getPropertyName()));
 		return String.format("set%s", getPropertyUpper());
 	}
 
